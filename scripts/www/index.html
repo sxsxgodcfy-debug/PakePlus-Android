@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#7fc8a9" />
+  <title>宝宝成长记 · 育儿记录</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👶</text></svg>" />
+</head>
+<body>
+  <!-- 顶部：宝宝信息栏 -->
+  <header class="topbar">
+    <div class="baby-switch" id="babySwitch" role="button" tabindex="0">
+      <span class="baby-avatar" id="babyAvatar">👶</span>
+      <div class="baby-meta">
+        <div class="baby-name" id="babyName">未设置宝宝</div>
+        <div class="baby-age" id="babyAge">点击下方添加宝宝</div>
+      </div>
+      <span class="baby-caret">▾</span>
+    </div>
+  </header>
+
+  <main class="content">
+    <!-- 今日页 -->
+    <section class="page" id="page-today">
+      <div class="hero">
+        <div class="hero-row">
+          <div>
+            <div class="hero-date" id="todayDate"></div>
+            <div class="hero-sub">育儿概览</div>
+          </div>
+          <input type="date" id="datePick" class="date-pick" title="选择日期" />
+        </div>
+      </div>
+
+      <div class="summary-grid" id="summaryGrid"></div>
+
+      <div class="quick-add">
+        <button class="qbtn q-feed" data-type="feeding">🍼<span>喂奶</span></button>
+        <button class="qbtn q-sleep" data-type="sleep">😴<span>睡眠</span></button>
+        <button class="qbtn q-diaper" data-type="diaper">💧<span>排便</span></button>
+        <button class="qbtn q-food" data-type="solid">🥣<span>正餐</span></button>
+        <button class="qbtn q-sup" data-type="supplement">💊<span>补剂</span></button>
+        <button class="qbtn q-grow" data-type="growth">📏<span>成长</span></button>
+      </div>
+
+      <div class="section-title">当日记录</div>
+      <div class="timeline" id="todayTimeline"></div>
+    </section>
+
+    <!-- 时间线页 -->
+    <section class="page hidden" id="page-timeline">
+      <div class="section-title">全部记录</div>
+      <div class="filter-row" id="filterRow">
+        <button class="chip active" data-filter="all">全部</button>
+        <button class="chip" data-filter="feeding">喂奶</button>
+        <button class="chip" data-filter="sleep">睡眠</button>
+        <button class="chip" data-filter="diaper">排便</button>
+        <button class="chip" data-filter="solid">正餐</button>
+        <button class="chip" data-filter="supplement">补剂</button>
+        <button class="chip" data-filter="growth">成长</button>
+      </div>
+      <div class="timeline" id="allTimeline"></div>
+    </section>
+
+    <!-- 统计页 -->
+    <section class="page hidden" id="page-stats">
+      <div class="section-title">趋势统计</div>
+      <div class="range-row" id="rangeRow">
+        <button class="chip active" data-range="7">近7天</button>
+        <button class="chip" data-range="14">近14天</button>
+        <button class="chip" data-range="30">近30天</button>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">每日奶量（ml）</div>
+        <div class="chart" id="chartMilk"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">每日喂奶次数</div>
+        <div class="chart" id="chartFeed"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">每日睡眠时长（小时）</div>
+        <div class="chart" id="chartSleep"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">成长曲线（体重 kg / 身高 cm）</div>
+        <div class="chart" id="chartGrowth"></div>
+        <div class="legend">
+          <span><i class="dot dot-w"></i>体重(kg)</span>
+          <span><i class="dot dot-h"></i>身高(cm)</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-title">排便次数</div>
+        <div class="chart" id="chartDiaper"></div>
+      </div>
+    </section>
+
+    <!-- 我的页 -->
+    <section class="page hidden" id="page-me">
+      <div class="section-title">我的</div>
+      <div class="me-card">
+        <div class="me-avatar" id="meAvatar">👶</div>
+        <div class="me-name" id="meName">未设置</div>
+        <div class="me-sub" id="meSub"></div>
+      </div>
+      <div class="menu-list">
+        <button class="menu-item" id="btnManageBaby">👶 宝宝信息管理</button>
+        <button class="menu-item" id="btnExport">📤 导出数据（JSON）</button>
+        <button class="menu-item" id="btnImport">📥 导入数据（JSON）</button>
+        <button class="menu-item danger" id="btnClear">🗑️ 清空当前宝宝数据</button>
+        <button class="menu-item" id="btnAbout">ℹ️ 关于</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json" hidden />
+    </section>
+  </main>
+
+  <!-- 底部导航 -->
+  <nav class="tabbar">
+    <button class="tab active" data-page="today"><span>🏠</span>今日</button>
+    <button class="tab" data-page="timeline"><span>📋</span>时间线</button>
+    <button class="fab" id="fab" aria-label="添加记录">＋</button>
+    <button class="tab" data-page="stats"><span>📊</span>统计</button>
+    <button class="tab" data-page="me"><span>👤</span>我的</button>
+  </nav>
+
+  <!-- 记录表单弹窗 -->
+  <div class="modal-mask hidden" id="recordModal">
+    <div class="modal">
+      <div class="modal-head">
+        <span id="recordModalTitle">添加记录</span>
+        <button class="modal-close" id="recordClose">✕</button>
+      </div>
+      <div class="modal-body" id="recordForm"></div>
+      <div class="modal-foot">
+        <button class="btn-ghost" id="recordCancel">取消</button>
+        <button class="btn-primary" id="recordSave">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通用弹窗（宝宝管理/关于等） -->
+  <div class="modal-mask hidden" id="infoModal">
+    <div class="modal">
+      <div class="modal-head">
+        <span id="infoModalTitle">提示</span>
+        <button class="modal-close" id="infoClose">✕</button>
+      </div>
+      <div class="modal-body" id="infoBody"></div>
+      <div class="modal-foot" id="infoFoot"></div>
+    </div>
+  </div>
+
+  <!-- 轻提示 -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
