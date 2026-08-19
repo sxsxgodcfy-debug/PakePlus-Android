@@ -52,6 +52,11 @@
     <!-- 时间线页 -->
     <section class="page hidden" id="page-timeline">
       <div class="section-title">全部记录</div>
+      <div class="search-bar">
+        <span class="search-ico">🔍</span>
+        <input type="search" id="tlSearch" class="search-input" placeholder="搜索关键字（内容 / 备注 / 日期…）" autocomplete="off">
+        <button class="search-clear" id="tlSearchClear" type="button">✕</button>
+      </div>
       <div class="filter-row" id="filterRow">
         <button class="chip active" data-filter="all">全部</button>
         <button class="chip" data-filter="feeding">喂奶</button>
@@ -61,12 +66,17 @@
         <button class="chip" data-filter="supplement">补剂</button>
         <button class="chip" data-filter="growth">成长</button>
       </div>
+      <div class="tl-result" id="tlResult"></div>
       <div class="timeline" id="allTimeline"></div>
     </section>
 
     <!-- 统计页 -->
     <section class="page hidden" id="page-stats">
       <div class="section-title">趋势统计</div>
+      <div class="range-row" id="modeRow">
+        <button class="chip active" data-mode="bar">柱状图</button>
+        <button class="chip" data-mode="line">折线图</button>
+      </div>
       <div class="range-row" id="rangeRow">
         <button class="chip active" data-range="7">近7天</button>
         <button class="chip" data-range="14">近14天</button>
@@ -108,6 +118,7 @@
       </div>
       <div class="menu-list">
         <button class="menu-item" id="btnManageBaby">👶 宝宝信息管理</button>
+        <button class="menu-item" id="btnReport">🖨️ 打印 / 导出报表</button>
         <button class="menu-item" id="btnExport">📤 导出数据（JSON）</button>
         <button class="menu-item" id="btnImport">📥 导入数据（JSON）</button>
         <button class="menu-item danger" id="btnClear">🗑️ 清空当前宝宝数据</button>
@@ -150,6 +161,22 @@
       </div>
       <div class="modal-body" id="infoBody"></div>
       <div class="modal-foot" id="infoFoot"></div>
+    </div>
+  </div>
+
+  <!-- 图片预览弹窗 -->
+  <div class="img-preview-mask hidden" id="imgPreviewModal">
+    <div class="img-preview-box">
+      <div class="img-preview-bar">
+        <span>图片预览</span>
+        <span id="imgPreviewMeta" class="img-preview-meta"></span>
+        <button class="modal-close" id="imgPreviewClose">✕</button>
+      </div>
+      <div class="img-preview-scroll"><img id="imgPreview" alt="育儿记录报表图片"></div>
+      <div class="img-preview-actions">
+        <button class="btn-ghost" id="imgPreviewDl">⬇️ 下载图片</button>
+        <button class="btn-primary" id="imgPreviewClose2">关闭</button>
+      </div>
     </div>
   </div>
 
